@@ -1,9 +1,16 @@
 import { RxDashboard } from "react-icons/rx";
 import SidebarItem from "./customLink";
 import { Icon } from "@iconify/react";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated");
+    navigate("/signIn");
+  };
+
   return (
     <aside className="w-60 min-h-screen bg-white flex flex-col px-6 py-8">
       {/* Logo */}
@@ -36,7 +43,7 @@ const Sidebar = () => {
             />
           }
           label="MoneyBag Plans"
-          path="/moneybag-plans"
+          path="/moneybag"
         />
         <SidebarItem
           icon={
@@ -74,7 +81,11 @@ const Sidebar = () => {
       </div>
 
       {/* Logout */}
-      <button className="flex items-center gap-3 text-sm text-gray-500 hover:text-red-500">
+      <button
+        type="button"
+        onClick={handleLogout}
+        className="flex items-center gap-3 text-sm text-gray-500 hover:text-red-500"
+      >
         <Icon icon="mdi-light:logout" width="24" height="24" />
         Log Out
       </button>

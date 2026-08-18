@@ -34,12 +34,20 @@ function Navbar() {
         </div>
 
         {/* Desktop Button */}
-        <NavLink
-          to="/signIn"
-          className="hidden md:inline-block bg-primary-100 text-white px-6 py-2 rounded-md hover:opacity-90 transition"
-        >
-          Sign In
-        </NavLink>
+        <div>
+          <NavLink
+            to="/signIn"
+            className="hidden md:inline-block font-bold bg-white text-black-100 px-6 py-2 r hover:opacity-90 transition"
+          >
+            Log In
+          </NavLink>
+          <NavLink
+            to="/signIn"
+            className="hidden md:inline-block bg-primary-100 text-white px-6 py-2 rounded-lg hover:opacity-90 transition"
+          >
+            Sign In
+          </NavLink>
+        </div>
 
         {/* Mobile Menu Button */}
         <button
@@ -78,7 +86,7 @@ function Navbar() {
 
             <NavLink
               to="/signIn"
-              className="bg-primary-100 text-white text-center py-3 rounded-md"
+              className="bg-primary-100 font-bold text-white text-center py-3 rounded-lg"
               onClick={() => setIsOpen(false)}
             >
               Sign In

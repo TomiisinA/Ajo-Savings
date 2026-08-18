@@ -26,6 +26,17 @@
   --color-yellow: #faf8d1;
   --color-red: #ffedec;
   --color-green: #d1fadf;
+  --color-primary: #6D28D9;  
+  --color-bright: #7C3AED;    
+  --color-soft: #9F67F5;     
+  --color-ink: #2E1065;      
+  --color-lav: #F4F1FC;      
+  --color-lav2: #EDE9FE;      
+  --color-coral: #FB6D4C;     
+  --color-gold: #F4C04E;     
+  --color-border: #ECE7FA;
+  --color-muted: #6B7280;
+  --color-green: #16A34A;
 
   /* Font sizes (scale) */
   --text-xs: 12px;

@@ -1,29 +1,36 @@
 import { Icon } from "@iconify/react";
 import { Table } from "./table";
 import { useState } from "react";
-import FundWalletModal from "./modals/fundWallet";
-
-// eslint-disable-next-line react/prop-types
-export const BalanceCard = ({ title, amount, bg }) => {
-  const [hideBalance, setHideBalance] = useState(false);
-  return (
-    <div className={`rounded-lg p-6 ${bg}`}>
-      <p className="text-xl text-gray-300 font-bold flex items-center justify-between">
-        {hideBalance ? "••••••" : amount}
-        <button onClick={() => setHideBalance(!hideBalance)}>
-          <Icon icon="clarity:eye-hide-line" width="22" />
-        </button>
-      </p>
-    <p className="font-extrabold text-gray-400 mt-2">{title}</p>
-    </div>
-  );
-};
+import FundWalletModal from "../../components/modals/FundWalletModal";
+import WithdrawModal from "../../components/modals/WithdrawModal";
+import { BalanceCard } from "../../components/BalanceCard";
+import Button from "../../components/ui/Button";
+import { formatCurrency } from "../../utils/currency";
 
 const Dashboard = () => {
-  const { currency, setCurrency } = useState("NGN");
-  const { search, setSearch } = useState("");
+  const [currency, setCurrency] = useState("NGN");
+  const [search, setSearch] = useState("");
   const [isFundOpen, setIsFundOpen] = useState(false);
-  // const [amount, setAmount] = useState("");
+  const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
+  const [walletBalance, setWalletBalance] = useState(12000000.1);
+
+  const handleFund = (amount) => {
+    const value = Number(amount);
+    if (!value || value <= 0) return;
+    setWalletBalance((prev) => prev + value);
+    setIsFundOpen(false);
+  };
+
+  const handleWithdraw = (amount) => {
+    const value = Number(amount);
+    if (!value || value <= 0) return;
+    if (value > walletBalance) {
+      alert("Insufficient balance");
+      return;
+    }
+    setWalletBalance((prev) => prev - value);
+    setIsWithdrawOpen(false);
+  };
 
   return (
     <div className=" m-6  ">
@@ -35,7 +42,7 @@ const Dashboard = () => {
             placeholder="Search here"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border rounded-md 3  bg-white p-2 text-sm border-none shadow-lg outline-none"
+            className="border rounded-md bg-white p-2 text-sm border-none shadow-lg outline-none"
           />
           <p className="ml-2 border text-xl rounded-lg bg-white border-none p-1">
             <Icon icon="mdi:bell-outline" width="24" height="24" />
@@ -66,57 +73,53 @@ const Dashboard = () => {
         >
           <BalanceCard
             title="Wallet Balance"
-            amount={`N12,000,000.10`}
+            amount={formatCurrency(walletBalance, currency)}
             bg="bg-primary-400 text-white"
           />
 
           <BalanceCard
             title="Emergency Balance"
-            amount={`N 80,000.10`}
+            amount={formatCurrency(80000.1, currency)}
             bg="bg-yellow text-gray-700"
           />
 
           <BalanceCard
             title="Flex Balance"
-            amount={`N20,000.10`}
+            amount={formatCurrency(20000.1, currency)}
             bg="bg-red text-gray-700"
           />
 
           <BalanceCard
             title="Target Balance"
-            amount={`N 20,000.10`}
+            amount={formatCurrency(20000.1, currency)}
             bg="bg-green text-gray-700"
           />
         </div>
 
         <div className="flex gap-4 mb-4">
-          <button
-            className="bg-white text-primary-200 px-6 py-3 rounded-lg font-semibold"
-            onClick={() => setIsFundOpen(true)}
-          >
+          <Button variant="secondary" onClick={() => setIsFundOpen(true)}>
             Fund Wallet
-          </button>
+          </Button>
 
-          <button className="bg-white text-primary-200 px-6 py-3 rounded-lg font-semibold">
+          <Button variant="secondary" onClick={() => setIsWithdrawOpen(true)}>
             Withdraw Funds
-          </button>
+          </Button>
         </div>
 
         <p className="text-sm text-primary-200 cursor-pointer mb-6">
           View Pending Approval
         </p>
         <div>
-          <Table />
+          <Table search={search} />
         </div>
       </div>
       {isFundOpen && (
-        <FundWalletModal
-          onClose={() => setIsFundOpen(false)}
-          onFund={(amount) => {
-            // eslint-disable-next-line no-undef
-            fundWallet(amount);
-            setIsFundOpen(false);
-          }}
+        <FundWalletModal onClose={() => setIsFundOpen(false)} onFund={handleFund} />
+      )}
+      {isWithdrawOpen && (
+        <WithdrawModal
+          onClose={() => setIsWithdrawOpen(false)}
+          onWithdraw={handleWithdraw}
         />
       )}
     </div>

@@ -1,38 +1,35 @@
-import React from "react";
 import { Icon } from "@iconify/react";
-
 import { useState } from "react";
-
-// eslint-disable-next-line react/prop-types
-interface BalanceCardProps {
-  title: string;
-  amount: string;
-  bg: string;
-}
-
-export const BalanceCard: React.FC<BalanceCardProps> = ({
-  title,
-  amount,
-  bg,
-}) => {
-  const [hideBalance, setHideBalance] = useState(false);
-  return (
-    <div className={`rounded-lg p-6 ${bg}`}>
-      <p className="text-2xl font-bold flex items-center justify-between">
-        {hideBalance ? "••••••" : amount}
-        <button onClick={() => setHideBalance(!hideBalance)}>
-          <Icon icon="clarity:eye-hide-line" width="22" />
-        </button>
-      </p>
-      <p className="font-semibold mt-2">{title}</p>
-    </div>
-  );
-};
+import { BalanceCard } from "../../components/BalanceCard";
+import Button from "../../components/ui/Button";
+import FundWalletModal from "../../components/modals/FundWalletModal";
+import WithdrawModal from "../../components/modals/WithdrawModal";
+import { formatCurrency } from "../../utils/currency";
 
 export const MyWallet = () => {
   const [currency, setCurrency] = useState("NGN");
   const [search, setSearch] = useState("");
   const [isFundOpen, setIsFundOpen] = useState(false);
+  const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
+  const [walletBalance, setWalletBalance] = useState(12000000.1);
+
+  const handleFund = (amount: string) => {
+    const value = Number(amount);
+    if (!value || value <= 0) return;
+    setWalletBalance((prev) => prev + value);
+    setIsFundOpen(false);
+  };
+
+  const handleWithdraw = (amount: string) => {
+    const value = Number(amount);
+    if (!value || value <= 0) return;
+    if (value > walletBalance) {
+      alert("Insufficient balance");
+      return;
+    }
+    setWalletBalance((prev) => prev - value);
+    setIsWithdrawOpen(false);
+  };
 
   return (
     <div className=" m-6  ">
@@ -44,7 +41,7 @@ export const MyWallet = () => {
             placeholder="Search here"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border rounded-md 3  bg-white p-2 text-sm border-none shadow-lg outline-none"
+            className="border rounded-md bg-white p-2 text-sm border-none shadow-lg outline-none"
           />
           <p className="ml-2 border text-xl rounded-lg bg-white border-none p-1">
             <Icon icon="mdi:bell-outline" width="24" height="24" />
@@ -77,24 +74,29 @@ export const MyWallet = () => {
             <div className="w-auto">
               <BalanceCard
                 title="Total Amount"
-                amount={`N12,000,000.10`}
+                amount={formatCurrency(walletBalance, currency)}
                 bg="bg-primary-400 text-white "
               />
 
               <div className="flex gap-4 mb-4 pt-4">
-                <button className="bg-white text-primary-200 px-6 py-3 rounded-lg font-semibold">
-                  Create New Wallet
-                </button>
-                <button
-                  className="bg-white text-primary-200 px-6 py-3 rounded-lg font-semibold"
-                  onClick={() => setIsFundOpen(true)}
+                <Button
+                  variant="secondary"
+                  onClick={() =>
+                    alert("Multiple wallets are coming soon.")
+                  }
                 >
+                  Create New Wallet
+                </Button>
+                <Button variant="secondary" onClick={() => setIsFundOpen(true)}>
                   Fund Wallet
-                </button>
+                </Button>
 
-                <button className="bg-white text-primary-200 px-6 py-3 rounded-lg font-semibold">
+                <Button
+                  variant="secondary"
+                  onClick={() => setIsWithdrawOpen(true)}
+                >
                   Withdraw
-                </button>
+                </Button>
               </div>
             </div>
             <div className=" bg-white rounded-lg p-4  ">
@@ -123,6 +125,15 @@ export const MyWallet = () => {
           </p>
         </div>
       </div>
+      {isFundOpen && (
+        <FundWalletModal onClose={() => setIsFundOpen(false)} onFund={handleFund} />
+      )}
+      {isWithdrawOpen && (
+        <WithdrawModal
+          onClose={() => setIsWithdrawOpen(false)}
+          onWithdraw={handleWithdraw}
+        />
+      )}
     </div>
   );
 };
