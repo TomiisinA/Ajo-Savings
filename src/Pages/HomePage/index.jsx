@@ -3,6 +3,10 @@ import { useNavigate } from "react-router";
 import { LuShieldCheck } from "react-icons/lu";
 import { FaArrowRight } from "react-icons/fa6";
 import FloatingVisual from "../../components/FloatingVisual";
+import { PaymentPlans } from "./plans";
+import { HowItWorks } from "./howItWorks";
+import { Testimonials } from "./testimonials";
+import { Cta } from "./cta";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -10,7 +14,7 @@ function HomePage() {
   return (
     <div className="overflow-hidden ">
       {/* ================= HERO SECTION ================= */}
-      <section className=" bg-linear-[180deg,white_0%,#F4F1FC_100%] flex flex-col md:flex-row px-6 md:px-10 py-6  min-h-[calc(100vh-80px)]">
+      <section className=" mx-auto bg-linear-[180deg,white_0%,#F4F1FC_100%] flex flex-col md:flex-row px-6 md:px-10 py-6  min-h-[calc(100vh-80px)] ">
         {/* Text */}
         <div className="flex-3 flex items-center">
           <div className="flex flex-col justify-center gap-12 pr-0 md:pr-24">
@@ -70,97 +74,32 @@ function HomePage() {
 
       {/* ================= SECOND SECTION ================= */}
       <section className="mx-6 pt-6 text-center w-full">
-        <h1 className="heading-xl md:text-[40px] font-bold text-primary-200 ">
+        <h1 className=" mt-4 heading-xl md:text-[40px] font-bold text-primary-200 ">
           What we do
         </h1>
 
         <p className="text-lg md:text-xl text-gray-100 my-5">
-          Manage every wallet, plan and payout from one clean dashboard — built
-          to help you reach the goal you set.
+          Manage every wallet, plan and payout from one clean dashboard 
         </p>
 
         <img src="iPad Pro.png" alt="" className="mx-auto w-auto md:w-full" />
       </section>
-
       {/* ================= THIRD SECTION ================= */}
-      <section className="px-6 md:px-10 py-6 text-center bg-white-100 flex flex-col items-center">
-        <h1 className="my-8 heading-xl font-bold text-primary-200">
-          How it works
-        </h1>
-
-        {/* Circle Image */}
-        <div className="relative w-[250px] h-[250px] mb-10">
-          <div className="absolute inset-0 bg-[#ff6b52] rounded-full" />
-          <img
-            src="image 2.png"
-            alt=""
-            className="relative w-full h-full object-cover rounded-full"
-          />
-        </div>
-
-        {/* Boxes */}
-        <div className="flex flex-col md:flex-row gap-6 mt-6 w-full justify-center">
-          <div className="bg-white p-6 text-left w-full md:w-[30%] rounded-lg shadow-md">
-            <h2 className="text-primary-200 heading-lg  mb-2">1. Sign up</h2>
-            <p className="text-gray-100 text-lg">
-              Create an account with us to get with nice features for your
-              saving plan.
-            </p>
-          </div>
-
-          <div className="bg-white p-6 text-left w-full md:w-[30%] rounded-lg shadow-md">
-            <h2 className="text-primary-200 heading-lg  mb-2">
-              2. Select a Saving plan
-            </h2>
-            <p className="text-gray-100 text-lg">
-              We have three savings plans; Emergency, Flex and Target plan. You
-              have access to create more wallets in any currency.
-            </p>
-          </div>
-
-          <div className="bg-white p-6 text-left w-full md:w-[30%] rounded-lg shadow-md">
-            <h2 className="text-primary-200 heading-lg  mb-2">
-              3. Manage your Portfolio
-            </h2>
-            <p className="text-gray-100 text-lg">
-              You have access to create more wallets in any currency.
-            </p>
-          </div>
-        </div>
-      </section>
-
+      <div>
+        <PaymentPlans />
+      </div>
       {/* ================= FOURTH SECTION ================= */}
-      <section className="py-6 text-center">
-        <h1 className="my-8 heading-xl text-primary-200">What Customers Say</h1>
-
-        <div className="flex flex-col md:flex-row justify-center items-center gap-6">
-          <img
-            src="Rectangle 33.png"
-            alt=""
-            className="w-full md:w-auto hidden "
-          />
-
-          <div className="relative w-[250px] h-[250px]">
-            <div className="absolute inset-0 bg-blue rounded-full rounded-tr-none" />
-            <img
-              src="Rectangle 31.png"
-              alt=""
-              className="relative w-full h-full object-cover"
-            />
-          </div>
-
-          <div className="px-6 md:px-10 text-left leading-relaxed max-w-md">
-            <img src="quote.png" alt="" className="mb-4" />
-            <p className="text-black-300 text-lg">
-              MoneyBag, has helped me many times, achieve my saving goal. Guys,
-              its simple and fast to use, and it has wonderful saving plans.
-            </p>
-
-            <p className="mt-4 font-semibold text-black-300">Laura</p>
-            <p className="text-sm text-black-300">Entrepreneur</p>
-          </div>
-        </div>
-      </section>
+      <div>
+        <HowItWorks />
+      </div>
+      {/* ================= FIFTH SECTION ================= */}
+      <div>
+        <Testimonials />
+      </div>
+      {/* ================= SIXTH SECTION ================= */}
+      <div>
+        <Cta />
+      </div>
 
       <Footer />
     </div>

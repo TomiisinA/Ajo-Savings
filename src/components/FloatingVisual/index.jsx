@@ -40,7 +40,7 @@ const FloatingVisual = () => {
         </div>
 
         {/* savings goal card */}
-        <div className="absolute bottom-4 right-2 w-60 rotate-[5deg] rounded-3xl border border-0 bg-white p-5 shadow-md">
+        <div className="absolute bottom-4 right-2 w-60 rotate-[5deg] rounded-3xl border-0 bg-white p-5 shadow-md">
           <div className="flex items-center gap-3">
             <div className="relative h-20 w-20">
               <svg viewBox="0 0 80 80" className="h-20 w-20 -rotate-90">
