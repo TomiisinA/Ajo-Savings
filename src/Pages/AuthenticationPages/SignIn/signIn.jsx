@@ -1,165 +1,8 @@
-// import { useForm } from "react-hook-form";
-// import { Link, useNavigate } from "react-router-dom";
-
-// const SignIn = () => {
-//   const navigate = useNavigate();
-
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm();
-
-//   const onSubmit = (data) => {
-//     // console.log("Login Data:", data);
-//     // navigate("/dashboard");
-
-//     const savedUser = JSON.parse(localStorage.getItem("user"));
-
-//     if (!savedUser) {
-//       alert("No account found. Please sign up.");
-//       return;
-//     }
-
-//     if (
-//       data.email === savedUser.email &&
-//       data.password === savedUser.password
-//     ) {
-//       localStorage.setItem("isAuthenticated", "true");
-//       navigate("/dashboard");
-//     } else {
-//       alert("Invalid email or password");
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen">
-
-//       <div className="">
-//         <div className="w-full max-w-md">
-//           {/* Logo */}
-//           <Link to="/">
-//             <img src="logo.png" alt="MoneyBag" className="w-40 h-auto" />
-//           </Link>
-
-//           {/* Heading */}
-//           <h1 className="text-4xl font-semibold text-gray-300 mb-2">
-//             Welcome Back
-//           </h1>
-//           <p className="text-gray-300 mb-8">
-//             Welcome back! please enter your details
-//           </p>
-
-//           {/* Form */}
-//           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-//             {/* Email */}
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 Email
-//               </label>
-//               <input
-//                 {...register("email", {
-//                   required: "Email is required",
-//                   pattern: {
-//                     value: /^\S+@\S+$/i,
-//                     message: "Invalid email",
-//                   },
-//                 })}
-//                 type="email"
-//                 placeholder="Enter your email"
-//                 className="w-full h-11 px-4 rounded-md border border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-//               />
-//               {errors.email && (
-//                 <p className="text-red-500 text-xs mt-1">
-//                   {errors.email.message}
-//                 </p>
-//               )}
-//             </div>
-
-//             {/* Password */}
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 Password
-//               </label>
-//               <input
-//                 {...register("password", {
-//                   required: "Password is required",
-//                   minLength: {
-//                     value: 6,
-//                     message: "Minimum 6 characters",
-//                   },
-//                 })}
-//                 type="password"
-//                 placeholder="********"
-//                 className="w-full h-11 px-4 rounded-md border border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-//               />
-//               {errors.password && (
-//                 <p className="text-red-500 text-xs mt-1">
-//                   {errors.password.message}
-//                 </p>
-//               )}
-//             </div>
-
-//             {/* Remember / Forgot */}
-//             <div className="flex items-center justify-between text-sm">
-//               <label className="flex items-center gap-2 text-gray-600">
-//                 <input type="checkbox" className="accent-purple-600" />
-//                 Keep me signed in
-//               </label>
-
-//               <Link
-//                 to="/forgot-password"
-//                 className="text-primary-100 hover:underline"
-//               >
-//                 Forgot Password?
-//               </Link>
-//             </div>
-
-//             {/* Button */}
-//             <button
-//               type="submit"
-//               className="w-full bg-primary-100 text-white h-11 rounded-md font-medium hover:bg-purple-700 transition"
-//             >
-//               Login
-//             </button>
-//           </form>
-
-//           {/* Footer Links */}
-//           <div className="mt-6 text-center text-sm text-gray-600">
-//             Don’t have an account?{" "}
-//             <Link
-//               to="/signup"
-//               className="text-purple-600 font-medium hover:underline"
-//             >
-//               Signup
-//             </Link>
-//           </div>
-
-//           <p className="mt-4 text-center text-sm text-gray-400">
-//             Login to Admin
-//           </p>
-//         </div>
-//       </div>
-
-//     </div>
-//   );
-// };
-
-// export default SignIn;
-
+import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import PropTypes from "prop-types";
-import {
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  ArrowRight,
-  ShieldCheck,
-  Check,
-} from "lucide-react";
+import { ArrowRight, ShieldCheck, Check, Mail, Lock } from "lucide-react";
 import FloatingVisual from "../../../components/FloatingVisual";
 
 /* ---- Brand tokens (preserved from the live MoneyBag site) ---- */
@@ -176,62 +19,37 @@ const C = {
   green: "#16A34A",
 };
 
-Field.propTypes = {
-  label: PropTypes.string.isRequired,
-  icon: PropTypes.elementType.isRequired,
-  type: PropTypes.string,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  placeholder: PropTypes.string,
-  trailing: PropTypes.node,
-};
-
-/* Reusable input row */
-function Field({
-  label,
-  icon: Icon,
-  type = "text",
-  value,
-  onChange,
-  placeholder,
-  trailing,
-}) {
-  const [focus, setFocus] = useState(false);
-  return (
-    <div>
-      <label
-        className="mb-1.5 block text-sm font-semibold"
-        style={{ color: C.ink }}
-      >
-        {label}
-      </label>
-      <div
-        className="flex items-center gap-2 rounded-xl border bg-white px-3.5 transition-shadow"
-        style={{
-          borderColor: focus ? C.primary : C.border,
-          boxShadow: focus ? `0 0 0 3px ${C.lav2}` : "none",
-        }}
-      >
-        <Icon size={18} className="shrink-0 text-gray-400" />
-        <input
-          type={type}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)}
-          placeholder={placeholder}
-          className="w-full bg-transparent py-3 text-sm text-gray-800 outline-none placeholder:text-gray-400"
-        />
-        {trailing}
-      </div>
-    </div>
-  );
-}
-
 export default function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [show, setShow] = useState(false);
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    // console.log("Login Data:", data);
+    // navigate("/dashboard");
+
+    const savedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (!savedUser) {
+      alert("No account found. Please sign up.");
+      return;
+    }
+
+    if (
+      data.email === savedUser.email &&
+      data.password === savedUser.password
+    ) {
+      localStorage.setItem("isAuthenticated", "true");
+      navigate("/dashboard");
+    } else {
+      alert("Invalid email or password");
+    }
+  };
+  // const [show, setShow] = useState(false);
   const [remember, setRemember] = useState(false);
 
   return (
@@ -256,32 +74,65 @@ export default function SignIn() {
               Log in to keep growing your savings.
             </p>
 
-            <div className="mt-8 space-y-5">
-              <Field
-                label="Email"
-                icon={Mail}
-                type="email"
-                value={email}
-                onChange={setEmail}
-                placeholder="you@example.com"
-              />
+            <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-5">
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <div className="relative">
+                  <Mail
+                    size={18}
+                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                  />
+                  <input
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^\S+@\S+$/i,
+                        message: "Invalid email",
+                      },
+                    })}
+                    type="email"
+                    placeholder="you@example.com"
+                    className="w-full h-11 pl-11 pr-4 rounded-xl border border-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-100"
+                  />
+                </div>
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.email.message}
+                  </p>
+                )}
+              </div>
 
-              <Field
-                label="Password"
-                icon={Lock}
-                type={show ? "text" : "password"}
-                value={password}
-                onChange={setPassword}
-                placeholder="••••••••"
-                trailing={
-                  <button
-                    onClick={() => setShow(!show)}
-                    className="shrink-0 text-gray-400 hover:text-gray-600"
-                  >
-                    {show ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                }
-              />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
+                </label>
+                <div className="relative">
+                  <Lock
+                    size={18}
+                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                  />
+                  <input
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 6,
+                        message: "Minimum 6 characters",
+                      },
+                    })}
+                    type="password"
+                    placeholder="********"
+                    className="w-full h-11 pl-11 pr-4 rounded-xl border border-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-100"
+                  />
+                </div>
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
 
               <div className="flex items-center justify-between">
                 <button
@@ -299,19 +150,12 @@ export default function SignIn() {
                   </span>
                   Keep me signed in
                 </button>
-                <a
-                  href="#"
-                  className="text-sm font-semibold text-primary-200"
-                 
-                >
+                <a href="#" className="text-sm font-semibold text-primary-200">
                   Forgot password?
                 </a>
               </div>
 
-              <button
-                className="bg-primary-100 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-bold text-white shadow-sm transition-transform hover:-translate-y-0.5"
-              
-              >
+              <button className="bg-primary-100 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-bold text-white shadow-sm transition-transform hover:-translate-y-0.5">
                 Log in <ArrowRight size={16} />
               </button>
 
@@ -319,15 +163,10 @@ export default function SignIn() {
               <div className="flex items-center gap-3">
                 <span className="h-px flex-1 bg-gray-500" />
                 <span className="text-xs font-medium text-gray-400">or</span>
-                <span
-                  className="h-px flex-1 bg-gray-500"
-                  
-                />
+                <span className="h-px flex-1 bg-gray-500" />
               </div>
 
-              <button
-                className="flex w-full border-gray-500 items-center justify-center gap-2 rounded-xl border bg-white py-3 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50"
-               >
+              <button className="flex w-full border-gray-500 items-center justify-center gap-2 rounded-xl border bg-white py-3 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50">
                 <svg width="16" height="16" viewBox="0 0 48 48">
                   <path
                     fill="#FFC107"
@@ -348,11 +187,11 @@ export default function SignIn() {
                 </svg>
                 Continue with Google
               </button>
-            </div>
+            </form>
 
             <p className="mt-8 text-center text-sm text-black-100">
-              Do you have an account?{" "}
-              <a href="#" className="font-bold text-primary-200" >
+              Don’t have an account?{" "}
+              <a href="#" className="font-bold text-primary-200">
                 Sign up
               </a>
             </p>
@@ -377,10 +216,7 @@ export default function SignIn() {
           <div className="relative w-full max-w-md">
             <FloatingVisual />
             <div className="mt-14 text-center">
-              <h2
-                className="text-2xl text-primary-500 font-extrabold tracking-tight"
-                
-              >
+              <h2 className="text-2xl text-primary-500 font-extrabold tracking-tight">
                 Save smarter, reach every goal
               </h2>
               <p className="mx-auto mt-2 max-w-xs text-sm text-gray-100">
@@ -394,10 +230,7 @@ export default function SignIn() {
                   ["4.9★", "Rating"],
                 ].map(([n, l]) => (
                   <div key={l}>
-                    <p
-                      className="text-lg text-primary-500 font-extrabold"
-                     
-                    >
+                    <p className="text-lg text-primary-500 font-extrabold">
                       {n}
                     </p>
                     <p className="text-xs font-medium text-gray-100">{l}</p>

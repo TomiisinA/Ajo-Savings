@@ -35,12 +35,12 @@ function Navbar() {
 
         {/* Desktop Button */}
         <div>
-          <NavLink
+          {/* <NavLink
             to="/signIn"
             className="hidden md:inline-block font-bold bg-white text-black-100 px-6 py-2 r hover:opacity-90 transition"
           >
             Log In
-          </NavLink>
+          </NavLink> */}
           <NavLink
             to="/signIn"
             className="hidden md:inline-block bg-primary-100 text-white px-6 py-2 rounded-lg hover:opacity-90 transition"
